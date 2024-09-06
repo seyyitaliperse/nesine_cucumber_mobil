@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>NesineCucumber</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- Cucumber dependencies: For writing test automation -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.cucumber</groupId>
+                    <artifactId>messages</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>${cucumber.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.cucumber</groupId>
+                    <artifactId>messages</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <groupId>io.cucumber</groupId>
+            <version>${cucumber.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.cucumber</groupId>
+                    <artifactId>messages</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>gherkin</artifactId>
+            <version>${gherkin.version}</version>
+        </dependency>
+
+        <!-- Selenium dependencies: For web browser automation -->
+        <dependency>
+            <artifactId>selenium-java</artifactId>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- WebDriverManager: To automate WebDriver setup -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- TestNG dependencies: For running and verifying tests -->
+        <dependency>
+            <artifactId>testng</artifactId>
+            <groupId>org.testng</groupId>
+            <scope>test</scope>
+            <version>${testng.version}</version>
+        </dependency>
+
+        <!-- Jackson Databind: For JSON processing -->
+        <dependency>
+            <artifactId>jackson-databind</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+
+        <!-- Lombok: To reduce boilerplate code -->
+        <dependency>
+            <artifactId>lombok</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <scope>provided</scope>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <!-- PDFBox: For working with PDF files -->
+        <dependency>
+            <artifactId>pdfbox</artifactId>
+            <groupId>org.apache.pdfbox</groupId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+
+        <!-- JSON Simple: For JSON parsing -->
+        <dependency>
+            <artifactId>json-simple</artifactId>
+            <groupId>com.googlecode.json-simple</groupId>
+            <version>${json-simple.version}</version>
+        </dependency>
+
+        <!-- JSON Path: For JSON parsing -->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${json-path.version}</version>
+        </dependency>
+
+        <!-- Log4j Core: For logging -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <!-- Log4j SLF4J Impl: For bridging SLF4J to Log4j -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <allure.version>2.28.1</allure.version>
+        <aspectj.version>1.9.22.1</aspectj.version>
+        <cucumber.version>7.18.1</cucumber.version>
+        <gherkin.version>28.0.0</gherkin.version>
+        <selenium.version>4.23.0</selenium.version>
+        <webdrivermanager.version>5.8.0</webdrivermanager.version>
+        <testng.version>7.10.2</testng.version>
+        <restassured.version>5.5.0</restassured.version>
+        <postgresql.version>42.7.3</postgresql.version>
+        <jackson-databind.version>2.17.2</jackson-databind.version>
+        <jackson-datatype-jsr310.version>2.17.2</jackson-datatype-jsr310.version>
+        <lombok.version>1.18.34</lombok.version>
+        <passay.version>1.6.4</passay.version>
+        <gson.version>2.10.1</gson.version>
+        <pdfbox.version>2.0.28</pdfbox.version>
+        <json-simple.version>1.1.1</json-simple.version>
+        <json-path.version>2.6.0</json-path.version>
+        <jsoup.version>1.17.2</jsoup.version>
+        <log4j.version>2.23.1</log4j.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
