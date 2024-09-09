@@ -1,9 +1,9 @@
 package helpers.utils;
 
+import helpers.container.Context;
 import helpers.logger.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,22 +13,21 @@ import java.time.Duration;
 
 public class BrowserUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(BrowserUtils.class);
-    protected WebDriver driver;
-    private WebDriverWait wait;
-    private final int WAIT_TIME = 10000;
+    protected static final Logger logger = LoggerFactory.getLogger(BrowserUtils.class);
+    private final WebDriverWait wait;
+    private final Context context;
 
-    public BrowserUtils(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofMillis(WAIT_TIME));
+    public BrowserUtils(Context context) {
+        this.context = context;
+        this.wait = context.getWebDriverWait();
     }
 
-    public void click(WebElement element) {
+    public void tap(WebElement element) {
         try {
             waitForVisibilityOfElement(element);
             element.click();
         } catch (Exception e) {
-            throw new RuntimeException("Could not clicked element!");
+            throw new RuntimeException("Could not click element!", e);
         }
     }
 
@@ -38,7 +37,7 @@ public class BrowserUtils {
             element.clear();
             element.sendKeys(text);
         } catch (Exception e) {
-            throw new RuntimeException("Could not send keys to element!");
+            throw new RuntimeException("Could not send keys to element!", e);
         }
     }
 
@@ -47,8 +46,13 @@ public class BrowserUtils {
             wait.until(ExpectedConditions.visibilityOf(element));
             return element.getText();
         } catch (Exception e) {
-            throw new RuntimeException("Could not get text from element!");
+            throw new RuntimeException("Could not get text from element!", e);
         }
+    }
+
+    public String getInputValue(WebElement element) {
+        waitForVisibilityOfElement(element);
+        return element.getAttribute("value");
     }
 
     public boolean isElementVisible(WebElement element) {
@@ -60,6 +64,17 @@ public class BrowserUtils {
         }
     }
 
+    public boolean isElementVisible(WebElement element, long timeoutInSeconds) {
+        try {
+            WebDriverWait customWait = new WebDriverWait(context.getDriver(), Duration.ofMillis(timeoutInSeconds));
+            customWait.until(ExpectedConditions.visibilityOf(element));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    //WAIT METHODS
     public void waitForVisibilityOfElement(WebElement element) {
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
@@ -68,31 +83,48 @@ public class BrowserUtils {
         }
     }
 
+    //ASSERTION METHODS
     public void assertEquals(Object actual, Object expected, String message) {
         Assert.assertEquals(actual, expected, message);
     }
 
-    public void assertContains(String actual, String expected, String message) {
+    public void assertEqualsText(WebElement element, String expected, String message) {
+        String actualText = getText(element);
+        Assert.assertEquals(actualText, expected, message);
+    }
+
+    public void assertContainsText(WebElement actualElement, String expected, String message) {
+        String actualText = getText(actualElement);
+
         try {
-            Assert.assertTrue(actual.contains(expected), message);
+            Assert.assertTrue(actualText.contains(expected), message);
         } catch (AssertionError e) {
-            String failureMessage = String.format("%s%nActual: %s%nExpected: %s", message, actual,
-                    expected);
+            String failureMessage = String.format("%s%nActual: %s%nExpected: %s", message, actualText, expected);
             System.err.println(failureMessage);
             throw new AssertionError(failureMessage, e);
         }
     }
 
-    public void navigateTo(String url, WebElement element) {
+    public void assertVisibilityOfElement(WebElement element, String message) {
         try {
-            logger.info("Navigating to URL: " + url);
-            driver.get(url);
-            waitForVisibilityOfElement(element);
+            wait.until(ExpectedConditions.visibilityOf(element));
+            logger.info("Element is visible: " + message);
         } catch (Exception e) {
-            throw new RuntimeException("Could not navigate to page!");
+            String failureMessage = String.format("Element is not visible. %s", message);
+            logger.error(failureMessage);
+            throw new AssertionError(failureMessage, e);
         }
     }
 
-
-
+    public String copyElement(WebElement element) {
+        try {
+            String text = element.getText();
+            if (text != null && text.contains("Copy")) {
+                return text;
+            }
+        } catch (Exception e) {
+            logger.error("Failed to get text from the element.", e);
+        }
+        return null;
+    }
 }

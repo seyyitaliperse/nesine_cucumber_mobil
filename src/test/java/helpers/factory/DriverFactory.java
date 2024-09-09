@@ -1,51 +1,51 @@
 package helpers.factory;
 
 import helpers.readers.ConfigurationReader;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class DriverFactory {
+    private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<>();
 
-    private WebDriver driver;
+    public static AppiumDriver getDriver() {
+        return driver.get();
+    }
 
-    // Constructor ile driver'ı PicoContainer tarafından enjekte edilebilir hale getiriyoruz
-    public DriverFactory() {
-        String browser = ConfigurationReader.get("browser");
+    public static WebDriverWait getWebDriverWait(){
+        return new WebDriverWait(getDriver(), Duration.ofMillis(Long.parseLong(ConfigurationReader.get("waitMillis"))));
+    }
 
-        switch (browser.toLowerCase()) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-                break;
+    public static void initializeDriver() {
+        DesiredCapabilities caps = new DesiredCapabilities();
 
-            case "chrome-headless":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions chromeHeadlessOptions = new ChromeOptions();
-                chromeHeadlessOptions.addArguments("--headless", "--disable-gpu", "--no-sandbox");
-                driver = new ChromeDriver(chromeHeadlessOptions);
-                break;
+        caps.setCapability("platformName", ConfigurationReader.get("platformName"));
+        caps.setCapability("appium:deviceName", ConfigurationReader.get("deviceName"));
+        caps.setCapability("appium:platformVersion", ConfigurationReader.get("platformVersion"));
+        caps.setCapability("appium:automationName", ConfigurationReader.get("automationName"));
+        caps.setCapability("appium:appPackage", ConfigurationReader.get("appPackage"));
+        caps.setCapability("appium:appActivity", ConfigurationReader.get("appActivity"));
+        caps.setCapability("appium:newCommandTimeout", 300);
 
-            case "edge":
-                WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
-                break;
+        String appiumServerURL = ConfigurationReader.get("appiumServerURL");
 
-            default:
-                throw new IllegalArgumentException("Browser type not supported: " + browser);
+        try {
+            driver.set(new AppiumDriver(new URL(appiumServerURL), caps));
+            getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Invalid Appium Server URL: " + e.getMessage());
         }
     }
 
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    public void quitDriver() {
-        if (driver != null) {
-            driver.quit();
+    public static void quitDriver() {
+        if (driver.get() != null) {
+            driver.get().quit();
+            driver.remove();
         }
     }
 }

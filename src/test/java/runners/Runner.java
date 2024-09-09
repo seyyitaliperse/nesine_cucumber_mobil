@@ -2,25 +2,31 @@ package runners;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.AfterSuite;
+import helpers.factory.DriverFactory;
 
 @CucumberOptions(
         features = "src/test/resources/scenarios",
-        glue = "steps",
+        glue = {"steps", "hooks"},
         plugin = {
                 "pretty",
                 "html:target/cucumber-reports/cucumber.html",
                 "json:target/cucumber-reports/cucumber.json",
-                "rerun:target/rerun.txt"
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
         },
         monochrome = true,
         dryRun = false,
-        tags = "@smoke or @regression"
+        tags = "@smoke"
 )
 public class Runner extends AbstractTestNGCucumberTests {
 
+    @AfterSuite
+    public void tearDownSuite() {
+        DriverFactory.quitDriver();
+    }
+
     @Override
-    @DataProvider(parallel = true)
+    @org.testng.annotations.DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }
