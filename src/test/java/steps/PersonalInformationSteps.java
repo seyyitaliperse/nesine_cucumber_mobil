@@ -21,7 +21,7 @@ public class PersonalInformationSteps {
     @When("user verifies that member id is display properly")
     public void userVerifiesThatMemberIdIsDisplayProperly() {
         String uyeNumarasi = context.getGlobalData().getData("uyeNumarasi");
-        //utils.ass(utils.getTextWithAtt(kisiselBilgilerimPage.uyeNumarasiElement), uyeNumarasi, "Uye numarasi values are not matched!");
+        utils.assertEquals(kisiselBilgilerimPage.getUyeNumarasi(), uyeNumarasi, "There is problem with Uye Numarasi..");
     }
 
 
