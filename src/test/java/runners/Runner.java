@@ -21,7 +21,7 @@ import helpers.factory.DriverFactory;
 public class Runner extends AbstractTestNGCucumberTests {
 
     @Override
-    @org.testng.annotations.DataProvider(parallel = true)
+    @org.testng.annotations.DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }

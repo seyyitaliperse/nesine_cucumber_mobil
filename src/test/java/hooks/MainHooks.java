@@ -27,6 +27,12 @@ public class MainHooks {
         driver = DriverFactory.getDriver();
         context.setDriver(driver);
         context.setWebDriverWait(DriverFactory.getWebDriverWait());
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (driver != null) {
+                driver.quit();
+            }
+        }));
     }
 
     @After(order = 1)
