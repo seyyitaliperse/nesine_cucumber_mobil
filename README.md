@@ -22,9 +22,6 @@ appiumServerURL=http://127.0.0.1:4723/
 # Appium
 waitMillis=10000
 
-# URL
-baseUrl=https://www.nesine.com
-
 # File Paths
 userCredentials=src/test/resources/data/test/user_credentials.json
 commonDataPath=src/test/resources/data/common/
