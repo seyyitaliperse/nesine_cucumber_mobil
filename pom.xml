@@ -65,32 +65,12 @@
             <version>${selenium.version}</version>
         </dependency>
 
-        <!-- WebDriverManager: To automate WebDriver setup -->
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>${webdrivermanager.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- TestNG dependencies: For running and verifying tests -->
         <dependency>
             <artifactId>testng</artifactId>
             <groupId>org.testng</groupId>
             <scope>test</scope>
             <version>${testng.version}</version>
-        </dependency>
-
-        <!-- Jackson Databind: For JSON processing -->
-        <dependency>
-            <artifactId>jackson-databind</artifactId>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <version>${jackson-databind.version}</version>
         </dependency>
 
         <!-- Lombok: To reduce boilerplate code -->
@@ -101,13 +81,6 @@
             <version>${lombok.version}</version>
         </dependency>
 
-        <!-- PDFBox: For working with PDF files -->
-        <dependency>
-            <artifactId>pdfbox</artifactId>
-            <groupId>org.apache.pdfbox</groupId>
-            <version>${pdfbox.version}</version>
-        </dependency>
-
         <!-- JSON Simple: For JSON parsing -->
         <dependency>
             <artifactId>json-simple</artifactId>
@@ -115,12 +88,12 @@
             <version>${json-simple.version}</version>
         </dependency>
 
-        <!-- JSON Path: For JSON parsing -->
         <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>${json-path.version}</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
+
 
         <!-- Log4j Core: For logging -->
         <dependency>
@@ -175,6 +148,18 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Testng Parallel Test -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M7</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${basedir}/config/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
             </plugin>
         </plugins>
     </build>
