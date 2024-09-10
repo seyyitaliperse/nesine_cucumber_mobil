@@ -1,20 +1,16 @@
-# Base image with Maven and JDK 17
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+FROM maven:3.8.5-openjdk-17 AS build
 
-# Copy project files into the container
-COPY . /app
-
-# Set the working directory inside the container
 WORKDIR /app
 
-# Install dependencies and build the project
-RUN mvn clean package
+COPY pom.xml .
+COPY src ./src
 
-# Final stage: create a lightweight image with JRE
-FROM eclipse-temurin:17-jre
+RUN mvn clean package -DskipTests
 
-# Copy the application JAR file from the build stage
-COPY --from=build /app/target/nesine-cucumber.jar /app/nesine-cucumber.jar
+FROM openjdk:17-jdk-slim
 
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "/app/nesine-cucumber.jar"]
+WORKDIR /app
+
+COPY --from=build /app/target/nesine_cucumber_mobil-1.0-SNAPSHOT.jar /app/nesine_cucumber_mobil.jar
+
+ENTRYPOINT ["java", "-jar", "nesine_cucumber_mobil.jar"]

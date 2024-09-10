@@ -54,7 +54,20 @@ commonDataPath=src/test/resources/data/common/
 * IntelliJ IDEA üzerinde testleri çalıştırmak için Runner sınıfı üzerinden testng.xml dosyasının yolunu seçin. Bunun için IntelliJ'de Edit Configurations kısmından TestNG yapılandırmasını açarak suite yolunu testng.xml dosyasına yönlendirin. Bu dosya, testlerin paralel çalışmasını sağlar.
 * Appium Server'ı başlatmayı unutmayın.
 
-## 3. Testlerden Sonra Allure Rapor Almak
+## 3. Dockerize Proje (Tercihen)
+Projeyi dockerize etmek isterseniz aşağıda ki adımları takip ediniz
+
+Aşağıdaki komutla Docker imajını oluşturun:
+```bash
+docker build -t nesine_cucumber_mobil .
+```
+
+Docker imajını kullanarak bir konteyner çalıştırın:
+```bash
+docker run -d --name nesine_cucumber_mobil-container nesine_cucumber_mobil
+```
+
+## 4. Testlerden Sonra Allure Rapor Almak
 
 Testler çalıştıktan sonra sonuçları raporlamak için Allure'yi şu şekilde kullanabilirsiniz:
 ```bash
@@ -63,7 +76,7 @@ allure serve
 Bu komut ile Allure test sonuçlarını tarayıcıda görüntüleyebilir ve detaylı raporları inceleyebilirsiniz.
 
 
-## 4. Projenin Genel Yapısı
+## 5. Projenin Genel Yapısı
 Projenin yapısı aşağıdaki gibidir:
 
 * ``DriverFactory``sınıfı Appium ile uyumlu şekilde çalışır ve mobil cihazlar/emülatörler üzerinden testlerin çalıştırılmasını sağlar.
