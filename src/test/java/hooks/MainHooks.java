@@ -22,7 +22,9 @@ public class MainHooks {
     }
 
     @Before(order = 1)
-    public void setUp() {
+    public void setUp(Scenario scenario) {
+        logger.info("Scenario started: " + scenario.getName());
+
         DriverFactory.initializeDriver();
         driver = DriverFactory.getDriver();
         context.setDriver(driver);
@@ -39,20 +41,19 @@ public class MainHooks {
     public void tearDown(Scenario scenario) {
         if (scenario.getStatus().name().equals("PASSED")){
             successLog(scenario);
-        }
-
-        if (scenario.getStatus().name().equals("FAILED")){
+        } else if (scenario.getStatus().name().equals("FAILED")){
             failedLog(scenario);
             captureScreenShoot(scenario);
         }
+
         if (driver != null){
             driver.quit();
         }
     }
 
     public void captureScreenShoot(Scenario scenario){
-        final byte[] screenshoot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-        scenario.attach(screenshoot, "image/png", "screenshot");
+        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshot, "image/png", "screenshot");
     }
 
     public void successLog(Scenario scenario){
