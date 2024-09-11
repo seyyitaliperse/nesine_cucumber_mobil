@@ -13,7 +13,7 @@ import java.time.Duration;
 
 public class BrowserUtils {
 
-    protected static final Logger logger = LoggerFactory.getLogger(BrowserUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(BrowserUtils.class);
     private final WebDriverWait wait;
     private final Context context;
 
@@ -23,31 +23,19 @@ public class BrowserUtils {
     }
 
     public void tap(WebElement element) {
-        try {
             waitForVisibilityOfElement(element);
             element.click();
-        } catch (Exception e) {
-            throw new RuntimeException("Could not click element!", e);
-        }
     }
 
     public void enterText(WebElement element, String text) {
-        try {
             waitForVisibilityOfElement(element);
             element.clear();
             element.sendKeys(text);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not send keys to element!", e);
-        }
     }
 
     public String getText(WebElement element) {
-        try {
             wait.until(ExpectedConditions.visibilityOf(element));
             return element.getText();
-        } catch (Exception e) {
-            throw new RuntimeException("Could not get text from element!", e);
-        }
     }
 
     public String getInputValue(WebElement element) {
@@ -56,22 +44,14 @@ public class BrowserUtils {
     }
 
     public boolean isElementVisible(WebElement element) {
-        try {
             wait.until(ExpectedConditions.visibilityOf(element));
             return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public boolean isElementVisible(WebElement element, long timeoutInSeconds) {
-        try {
             WebDriverWait customWait = new WebDriverWait(context.getDriver(), Duration.ofMillis(timeoutInSeconds));
             customWait.until(ExpectedConditions.visibilityOf(element));
             return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     //WAIT METHODS

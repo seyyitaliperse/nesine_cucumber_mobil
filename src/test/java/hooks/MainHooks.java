@@ -26,6 +26,7 @@ public class MainHooks {
         logger.info("Scenario started: " + scenario.getName());
 
         DriverFactory.initializeDriver();
+        logger.info("Nesine application has started..");
         driver = DriverFactory.getDriver();
         context.setDriver(driver);
         context.setWebDriverWait(DriverFactory.getWebDriverWait());
@@ -45,7 +46,6 @@ public class MainHooks {
             failedLog(scenario);
             captureScreenShoot(scenario);
         }
-
         if (driver != null){
             driver.quit();
         }
@@ -56,11 +56,12 @@ public class MainHooks {
         scenario.attach(screenshot, "image/png", "screenshot");
     }
 
-    public void successLog(Scenario scenario){
+
+    public void successLog(Scenario scenario) {
         logger.info("Passed! -> Scenario Name: " + scenario.getName());
     }
 
-    public void failedLog(Scenario scenario){
+    public void failedLog(Scenario scenario) {
         logger.info("Failed! -> Scenario Name: " + scenario.getName());
     }
 }
